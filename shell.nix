@@ -1,36 +1,13 @@
-
-
 { pkgs ? import <nixpkgs> { } }:
-#let
-#    startup_regtest = pkgs.fetchgit {
-#        url = "https://github.com/ElementsProject/lightning/";
-#        sparseCheckout = [''
-#          contrib/startup_regtest.sh
-#        ''];
-#        sha256 = "0000000000000000000000000000000000000000000000000000";
-#    };
-#in
-
-#let
-#    pyln-client = buildPythonPackage rec {
-#      pname = "pyln-client";
-#      version = "23.2";
-#      src = pkgs.fetchPypi {
-#        inherit pname version;
-#        sha256 = pkgs.lib.fakeSha256;
-#      };
-#      doCheck = false;
-#      propagatedBuildInputs = [
-#        # Specify dependencies
-#      ];
-#    };
-#    pythonEnv = pkgs.python38.withPackages(ps: with ps; [ pyln-client ] );
-#in
+let
+  #pyln-client = pkgs.callPackage ./pyln-client.nix { inherit pkgs; };
+in
 pkgs.mkShell rec {
   packages = [
+   # pyln-client
     pkgs.magic-wormhole
     pkgs.python38Packages.pip
-    pkgs.busybox
+    pkgs.bc
     pkgs.htop
     pkgs.less
     pkgs.python38Full
